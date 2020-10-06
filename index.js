@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const require = ("fs");
-const util = ("util");
+const fs = require("fs");
+const util = require("util");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -28,11 +28,11 @@ function promptUser() {
             message: "Usage of the product:"
         },
         {
-            type: "checkbox",
+            type: "list",
             name: "license",
-            message: "What's the title of your project?",
+            message: "Select a license:",
             choices: [
-                "BSD",
+                "BSD", 
                 "MIT",
                 "GPL"
             ]
@@ -61,10 +61,11 @@ function promptUser() {
 }
 
 function generateMarkdown(answers) {
+    console.log(answers);
     return `
-    # (#${answers.title})
+ # ${answers.title}
 
-
+ ![${answers.license} license](https://img.shields.io/badge/License-${answers.license}-blue.svg)
 ---
 
 ### Table of Contents
@@ -82,29 +83,30 @@ function generateMarkdown(answers) {
 
 ## Description
 
-${answers.description}
+- ${answers.description}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 ---
 
 ## How To Use
 - ${answers.usage}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
+
 ---
 
-#### Installation
+## Installation
 - ${answers.installation}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 ---
 
-#### Usage
+## Usage
 - ${answers.usage}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 ---
 
@@ -112,21 +114,21 @@ ${answers.description}
 ${answers.license}
 
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 ---
 
-#### Contributing
+## Contributing
 - ${answers.contributing}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 ---
 
-#### Test
+## Test
 - ${answers.test}
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
 
 
 ---
@@ -136,10 +138,15 @@ ${answers.license}
 - Email - [${answers.email}]
 - Github - [github.com/${answers.github}]
 
-[Back To The Top](#${answers.title})
+[Back To The Top](##Table-of-contents)
+
 
     `
 }
+
+// function license (req, res){
+//     req.body.field = Boolean(req.body.field)
+//  }
 
 promptUser()
 .then(function(answers) {
